@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROOMCRAFT UI Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Mockup-specific styles */
+    .mockup-wrapper {
+      background: #f0f0f5;
+      min-height: 100vh;
+    }
+    .mockup-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: white;
+      border-right: 1px solid var(--gray-200);
+      padding: 24px 16px;
+      z-index: 200;
+      overflow-y: auto;
+    }
+    .mockup-nav h2 {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .mockup-nav .version {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+    }
+    .mockup-nav a {
+      display: block;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--gray-700);
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 2px;
+      transition: all 0.15s;
+    }
+    .mockup-nav a:hover { background: var(--primary-bg); color: var(--primary); }
+    .mockup-nav .nav-section {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 20px 0 8px 12px;
+    }
+    .mockup-body {
+      margin-left: 220px;
+      padding: 32px;
+    }
+    .screen-section {
+      margin-bottom: 64px;
+    }
+    .screen-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .screen-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-bottom: 20px;
+    }
+    .screen-frame {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    .screen-frame-dark {
+      background: #e8e8e8;
+    }
+    .screen-frame > * { pointer-events: none; }
+    .screen-frame #app { min-height: auto; }
+
+    /* Color swatches */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .swatch {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      background: white;
+    }
+    .swatch-color {
+      height: 56px;
+    }
+    .swatch-info {
+      padding: 8px 10px;
+    }
+    .swatch-name { font-size: 11px; font-weight: 600; color: var(--gray-700); }
+    .swatch-hex { font-size: 10px; color: var(--gray-400); font-family: monospace; }
+
+    /* Component showcase */
+    .component-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .component-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .component-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 16px;
+    }
+
+    /* Room color showcase */
+    .room-colors {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    .room-color-item {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    .room-color-floor {
+      height: 40px;
+    }
+    .room-color-wall {
+      height: 20px;
+    }
+    .room-color-name {
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-700);
+      background: white;
+      text-align: center;
+    }
+
+    /* Spec tables */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 16px;
+    }
+    .spec-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: var(--gray-50);
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .spec-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--gray-100);
+      color: var(--gray-700);
+    }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table code {
+      background: var(--gray-100);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--primary);
+      font-family: 'SF Mono', monospace;
+    }
+    .spec-table .method {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+    }
+    .method-get { background: #10B981; }
+    .method-post { background: #2D5BFF; }
+    .method-patch { background: #F59E0B; }
+    .method-delete { background: #EF4444; }
+
+    .spec-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+    .spec-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+    .spec-card p {
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .arch-box {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .arch-box .arch-icon { font-size: 28px; margin-bottom: 8px; }
+    .arch-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .arch-box ul { list-style: none; font-size: 11px; color: var(--gray-500); line-height: 1.8; }
+    .arch-arrow {
+      text-align: center;
+      font-size: 20px;
+      color: var(--gray-400);
+      padding: 8px 0;
+    }
+
+    .roadmap-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .roadmap-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .roadmap-dot.done { background: #D1FAE5; }
+    .roadmap-dot.next { background: var(--primary-bg); }
+    .roadmap-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .roadmap-content p { font-size: 12px; color: var(--gray-500); line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      .mockup-nav { display: none; }
+      .mockup-body { margin-left: 0; padding: 16px; }
+    }
+  </style>
+</head>
+<body class="mockup-wrapper">
+
+<!-- Side Navigation -->
+<nav class="mockup-nav">
+  <h2>ROOMCRAFT</h2>
+  <div class="version">UI Mockup v1.0</div>
+
+  <div class="nav-section">デザインシステム</div>
+  <a href="#colors">カラーパレット</a>
+  <a href="#room-colors">部屋カラー</a>
+  <a href="#typography">タイポグラフィ</a>
+  <a href="#buttons">ボタン</a>
+  <a href="#forms">フォーム</a>
+  <a href="#cards">カード</a>
+
+  <div class="nav-section">画面</div>
+  <a href="#page-upload">トップ（アップロード）</a>
+  <a href="#page-loading">ローディング</a>
+  <a href="#page-viewer">3Dビューア</a>
+  <a href="#page-dashboard">物件一覧</a>
+  <a href="#page-admin">管理画面</a>
+  <a href="#page-share">共有モーダル</a>
+  <a href="#page-edit">編集パネル</a>
+  <a href="#page-furniture">家具パネル</a>
+
+  <div class="nav-section">モバイル</div>
+  <a href="#mobile">レスポンシブ</a>
+
+  <div class="nav-section">UX仕様</div>
+  <a href="#ux-flow">ユーザーフロー</a>
+
+</nav>
+
+<!-- Main Content -->
+<div class="mockup-body">
+
+  <!-- ==================== DESIGN SYSTEM ==================== -->
+
+  <section class="screen-section" id="colors">
+    <div class="screen-title">カラーパレット</div>
+    <div class="screen-desc">プライマリ・アクセント・ニュートラルカラー</div>
+
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#2D5BFF"></div><div class="swatch-info"><div class="swatch-name">Primary</div><div class="swatch-hex">#2D5BFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#5A7FFF"></div><div class="swatch-info"><div class="swatch-name">Primary Light</div><div class="swatch-hex">#5A7FFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FF6B35"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#FF6B35</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1A1A2E"></div><div class="swatch-info"><div class="swatch-name">Dark</div><div class="swatch-hex">#1A1A2E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#10B981"></div><div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#10B981</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F59E0B"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#F59E0B</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#EF4444"></div><div class="swatch-info"><div class="swatch-name">Danger</div><div class="swatch-hex">#EF4444</div></div></div>
+    </div>
+
+    <div class="screen-desc">グレースケール</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#111827"></div><div class="swatch-info"><div class="swatch-name">Gray 900</div><div class="swatch-hex">#111827</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#374151"></div><div class="swatch-info"><div class="swatch-name">Gray 700</div><div class="swatch-hex">#374151</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#6B7280"></div><div class="swatch-info"><div class="swatch-name">Gray 500</div><div class="swatch-hex">#6B7280</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#9CA3AF"></div><div class="swatch-info"><div class="swatch-name">Gray 400</div><div class="swatch-hex">#9CA3AF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#D1D5DB"></div><div class="swatch-info"><div class="swatch-name">Gray 300</div><div class="swatch-hex">#D1D5DB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E5E7EB"></div><div class="swatch-info"><div class="swatch-name">Gray 200</div><div class="swatch-hex">#E5E7EB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F3F4F6"></div><div class="swatch-info"><div class="swatch-name">Gray 100</div><div class="swatch-hex">#F3F4F6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F9FAFB"></div><div class="swatch-info"><div class="swatch-name">Gray 50</div><div class="swatch-hex">#F9FAFB</div></div></div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="room-colors">
+    <div class="screen-title">部屋タイプカラー</div>
+    <div class="screen-desc">3Dビューアでの部屋の色分け（フロア色 / 壁色）</div>
+    <div class="room-colors">
+      <div class="room-color-item"><div class="room-color-floor" style="background:#FCE4B8"></div><div class="room-color-wall" style="background:#FFF3D6"></div><div class="room-color-name">リビング<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #FCE4B8 / 壁 #FFF3D6</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#BDD7F5"></div><div class="room-color-wall" style="background:#DAE8FB"></div><div class="room-color-name">寝室<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #BDD7F5 / 壁 #DAE8FB</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#FFCFAA"></div><div class="room-color-wall" style="background:#FFE4CC"></div><div class="room-color-name">キッチン<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #FFCFAA / 壁 #FFE4CC</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#A8E6F0"></div><div class="room-color-wall" style="background:#CCF2F7"></div><div class="room-color-name">浴室<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #A8E6F0 / 壁 #CCF2F7</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#D7BDE2"></div><div class="room-color-wall" style="background:#E8D5F0"></div><div class="room-color-name">トイレ<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #D7BDE2 / 壁 #E8D5F0</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#E0E0E0"></div><div class="room-color-wall" style="background:#F0F0F0"></div><div class="room-color-name">廊下<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #E0E0E0 / 壁 #F0F0F0</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#CFD8DC"></div><div class="room-color-wall" style="background:#E0E7EA"></div><div class="room-color-name">玄関<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #CFD8DC / 壁 #E0E7EA</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#D7CCC8"></div><div class="room-color-wall" style="background:#E6DDD8"></div><div class="room-color-name">収納<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #D7CCC8 / 壁 #E6DDD8</span></div></div>
+      <div class="room-color-item"><div class="room-color-floor" style="background:#A8D8A8"></div><div class="room-color-wall" style="background:#CCE8CC"></div><div class="room-color-name">バルコニー<br><span style="font-size:9px;color:var(--gray-400);font-weight:400">床 #A8D8A8 / 壁 #CCE8CC</span></div></div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="typography">
+    <div class="screen-title">タイポグラフィ</div>
+    <div class="screen-desc">Noto Sans JP</div>
+    <div class="component-section">
+      <div style="font-size:40px;font-weight:900;margin-bottom:8px;color:var(--dark)">間取り図から、歩ける部屋へ。</div>
+      <div style="font-size:24px;font-weight:900;margin-bottom:8px">セクション見出し (24px/900)</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">サブ見出し (18px/700)</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:8px">カード見出し (15px/700)</div>
+      <div style="font-size:14px;margin-bottom:8px">本文テキスト (14px/400) - 間取り図をアップロードするだけでAIが自動で3Dバーチャル空間を生成します</div>
+      <div style="font-size:13px;color:var(--gray-500);margin-bottom:8px">サブテキスト (13px/400)</div>
+      <div style="font-size:12px;font-weight:500;color:var(--gray-500)">ラベル (12px/500)</div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="buttons">
+    <div class="screen-title">ボタン</div>
+    <div class="screen-desc">全バリエーション</div>
+    <div class="component-section">
+      <div class="component-label">通常サイズ</div>
+      <div class="component-row">
+        <button class="btn btn-primary" style="pointer-events:auto">Primary</button>
+        <button class="btn btn-accent" style="pointer-events:auto">Accent</button>
+        <button class="btn btn-outline" style="pointer-events:auto">Outline</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+      </div>
+      <div class="component-label">小サイズ</div>
+      <div class="component-row">
+        <button class="btn btn-sm btn-primary" style="pointer-events:auto">Primary SM</button>
+        <button class="btn btn-sm btn-accent" style="pointer-events:auto">Accent SM</button>
+        <button class="btn btn-sm btn-outline" style="pointer-events:auto">Outline SM</button>
+      </div>
+      <div class="component-label">フルワイド</div>
+      <button class="btn btn-primary generate-btn" style="pointer-events:auto;margin-top:8px">3D空間を生成する</button>
+    </div>
+  </section>
+
+  <section class="screen-section" id="forms">
+    <div class="screen-title">フォーム</div>
+    <div class="component-section">
+      <div class="form-grid" style="max-width:500px">
+        <div class="form-group">
+          <label>物件名</label>
+          <input type="text" placeholder="例：パークハイツ301号室">
+        </div>
+        <div class="form-group">
+          <label>間取り</label>
+          <input type="text" placeholder="例：2LDK">
+        </div>
+        <div class="form-group">
+          <label>面積（m²）</label>
+          <input type="number" placeholder="例：65">
+        </div>
+        <div class="form-group">
+          <label>天井高（m）</label>
+          <input type="number" value="2.4">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="cards">
+    <div class="screen-title">カード</div>
+    <div class="component-section" style="background:var(--gray-50)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+        <div class="property-card" style="pointer-events:auto">
+          <div class="property-card-body">
+            <h3>パークハイツ 301号室</h3>
+            <div class="property-meta"><span>2LDK</span><span>65m²</span><span>3階</span></div>
+            <div class="property-date">2026/03/18</div>
+          </div>
+          <div class="property-card-actions">
+            <button class="btn btn-sm btn-primary">3Dで見る</button>
+            <button class="btn btn-sm btn-outline">削除</button>
+          </div>
+        </div>
+        <div class="property-card" style="pointer-events:auto">
+          <div class="property-card-body">
+            <h3>グリーンヒルズ 501号室</h3>
+            <div class="property-meta"><span>1LDK</span><span>45m²</span><span>5階</span></div>
+            <div class="property-date">2026/03/17</div>
+          </div>
+          <div class="property-card-actions">
+            <button class="btn btn-sm btn-primary">3Dで見る</button>
+            <button class="btn btn-sm btn-outline">削除</button>
+          </div>
+        </div>
+        <div class="property-card" style="pointer-events:auto">
+          <div class="property-card-body">
+            <h3>サンライズマンション 202</h3>
+            <div class="property-meta"><span>3LDK</span><span>78m²</span><span>2階</span></div>
+            <div class="property-date">2026/03/16</div>
+          </div>
+          <div class="property-card-actions">
+            <button class="btn btn-sm btn-primary">3Dで見る</button>
+            <button class="btn btn-sm btn-outline">削除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SCREENS ==================== -->
+
+  <section class="screen-section" id="page-upload">
+    <div class="screen-title">画面: トップ（アップロード）</div>
+    <div class="screen-desc">パス: / - 間取り図のアップロードとデモ体験</div>
+    <div class="screen-frame">
+      <header id="header">
+        <div class="header-inner">
+          <a class="logo">ROOM<span>CRAFT</span></a>
+          <nav style="display:flex;gap:4px">
+            <span class="nav-link active">ホーム</span>
+            <span class="nav-link">物件一覧</span>
+            <span class="nav-link">管理</span>
+          </nav>
+        </div>
+      </header>
+      <div style="max-width:1200px;margin:0 auto;padding:24px">
+        <div class="upload-page" style="animation:none">
+          <h1>間取り図から、歩ける部屋へ。</h1>
+          <p class="subtitle">間取り図をアップロードするだけで<br>AIが自動で3Dバーチャル空間を生成します</p>
+          <div class="upload-features">
+            <div class="upload-feature"><div class="feat-icon">🤖</div> AI自動解析</div>
+            <div class="upload-feature"><div class="feat-icon">🏠</div> 3Dウォークスルー</div>
+            <div class="upload-feature"><div class="feat-icon">🛋️</div> 家具配置</div>
+            <div class="upload-feature"><div class="feat-icon">🔗</div> URLで共有</div>
+          </div>
+          <div class="upload-container">
+            <div class="drop-zone">
+              <div class="drop-zone-icon">📐</div>
+              <div class="drop-zone-text">間取り図をドラッグ＆ドロップ</div>
+              <div class="drop-zone-hint">PNG / JPG / PDF に対応（最大10MB）</div>
+              <div class="drop-zone-btn">ファイルを選択</div>
+            </div>
+            <div class="room-info-form">
+              <h3>物件情報（任意）</h3>
+              <div class="form-grid">
+                <div class="form-group"><label>物件名</label><input type="text" placeholder="例：パークハイツ301号室"></div>
+                <div class="form-group"><label>間取り</label><input type="text" placeholder="例：2LDK"></div>
+                <div class="form-group"><label>面積（m²）</label><input type="number" placeholder="例：65"></div>
+                <div class="form-group"><label>天井高（m）</label><input type="number" value="2.4"></div>
+                <div class="form-group"><label>階数</label><input type="number" placeholder="例：3"></div>
+                <div class="form-group"><label>築年数</label><input type="number" placeholder="例：5"></div>
+              </div>
+              <button class="btn btn-primary generate-btn" disabled>3D空間を生成する</button>
+            </div>
+            <div class="demo-section">
+              <div class="demo-divider"><span>または</span></div>
+              <button class="btn btn-accent" style="width:100%">デモデータで体験する（2LDK サンプル）</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-loading">
+    <div class="screen-title">画面: ローディング</div>
+    <div class="screen-desc">AI解析中に表示される進捗画面</div>
+    <div class="screen-frame" style="height:400px;position:relative">
+      <div style="position:absolute;inset:0;background:rgba(26,26,46,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">間取り図を解析中...</div>
+        <div class="loading-subtext">AIが図面を読み取って3D空間を構築しています</div>
+        <div class="loading-steps">
+          <div class="loading-step done"><div class="loading-step-dot"></div> 画像をアップロード中...</div>
+          <div class="loading-step active"><div class="loading-step-dot"></div> AIが間取りを解析中...</div>
+          <div class="loading-step"><div class="loading-step-dot"></div> 3D空間を構築中...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-viewer">
+    <div class="screen-title">画面: 3Dビューア</div>
+    <div class="screen-desc">パス: /view - 3D空間の表示と各種操作ツール</div>
+    <div class="screen-frame screen-frame-dark" style="height:500px;position:relative">
+      <!-- Simulated 3D view background -->
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#d0d0d0 0%,#e8e8e8 50%,#c8c8c8 100%)">
+        <!-- Room simulation -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) perspective(800px) rotateX(35deg) rotateZ(-25deg);width:350px;height:250px">
+          <div style="position:absolute;left:0;top:0;width:200px;height:150px;background:#FCE4B8;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:rgba(0,0,0,0.4)">リビング</div>
+          <div style="position:absolute;left:200px;top:0;width:100px;height:100px;background:#FFCFAA;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(0,0,0,0.4)">キッチン</div>
+          <div style="position:absolute;left:0;top:150px;width:120px;height:100px;background:#BDD7F5;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(0,0,0,0.4)">洋室1</div>
+          <div style="position:absolute;left:120px;top:150px;width:100px;height:100px;background:#BDD7F5;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(0,0,0,0.4)">洋室2</div>
+          <div style="position:absolute;left:200px;top:100px;width:80px;height:60px;background:#E0E0E0;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,0.4)">廊下</div>
+          <div style="position:absolute;left:220px;top:160px;width:70px;height:50px;background:#A8E6F0;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,0.4)">浴室</div>
+          <div style="position:absolute;left:290px;top:160px;width:50px;height:50px;background:#D7BDE2;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,0.3)">WC</div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:10">
+        <div class="viewer-toolbar" style="position:static;transform:none">
+          <button class="toolbar-btn active"><span class="icon">🗺️</span> 俯瞰</button>
+          <button class="toolbar-btn"><span class="icon">📋</span> 平面図</button>
+          <button class="toolbar-btn"><span class="icon">👁️</span> 一人称</button>
+          <button class="toolbar-btn"><span class="icon">📐</span> 計測</button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-btn"><span class="icon">✏️</span> 編集</button>
+          <button class="toolbar-btn"><span class="icon">🛋️</span> 家具</button>
+          <button class="toolbar-btn"><span class="icon">📷</span> 撮影</button>
+          <button class="toolbar-btn"><span class="icon">🔗</span> 共有</button>
+          <button class="toolbar-btn"><span class="icon">💾</span> 保存</button>
+          <button class="toolbar-btn"><span class="icon">←</span> 戻る</button>
+        </div>
+      </div>
+
+      <!-- Info bar -->
+      <div class="viewer-info-bar" style="position:absolute;bottom:12px;left:12px">
+        <div class="info-item"><span class="label">物件</span><span class="value">パークハイツ 301</span></div>
+        <div class="info-item"><span class="label">間取り</span><span class="value">2LDK</span></div>
+        <div class="info-item"><span class="label">面積</span><span class="value">65m²</span></div>
+      </div>
+
+      <!-- Hint -->
+      <div class="controls-hint" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%)">
+        <kbd>ドラッグ</kbd> 回転　<kbd>スクロール</kbd> ズーム　<kbd>右ドラッグ</kbd> 移動
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-dashboard">
+    <div class="screen-title">画面: 物件一覧</div>
+    <div class="screen-desc">パス: /dashboard - 保存済み物件の管理</div>
+    <div class="screen-frame">
+      <header><div class="header-inner"><a class="logo">ROOM<span>CRAFT</span></a><nav style="display:flex;gap:4px"><span class="nav-link">ホーム</span><span class="nav-link active">物件一覧</span><span class="nav-link">管理</span></nav></div></header>
+      <div style="max-width:1200px;margin:0 auto;padding:24px">
+        <div class="dashboard-header">
+          <div><h1 style="font-size:24px;font-weight:900">物件一覧</h1></div>
+          <div class="dashboard-actions">
+            <span class="ticket-badge">AI解析チケット: 999回</span>
+            <button class="btn btn-primary">+ 新しい物件を追加</button>
+          </div>
+        </div>
+        <div class="property-grid">
+          <div class="property-card"><div class="property-card-body"><h3>パークハイツ 301号室</h3><div class="property-meta"><span>2LDK</span><span>65m²</span><span>3階</span></div><div class="property-date">2026/03/18</div></div><div class="property-card-actions"><button class="btn btn-sm btn-primary">3Dで見る</button><button class="btn btn-sm btn-outline">削除</button></div></div>
+          <div class="property-card"><div class="property-card-body"><h3>グリーンヒルズ 501</h3><div class="property-meta"><span>1LDK</span><span>45m²</span></div><div class="property-date">2026/03/17</div></div><div class="property-card-actions"><button class="btn btn-sm btn-primary">3Dで見る</button><button class="btn btn-sm btn-outline">削除</button></div></div>
+          <div class="property-card"><div class="property-card-body"><h3>サンライズ 202号室</h3><div class="property-meta"><span>3LDK</span><span>78m²</span></div><div class="property-date">2026/03/16</div></div><div class="property-card-actions"><button class="btn btn-sm btn-primary">3Dで見る</button><button class="btn btn-sm btn-outline">削除</button></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-admin">
+    <div class="screen-title">画面: 管理画面</div>
+    <div class="screen-desc">パス: /admin - 統計とチケット管理</div>
+    <div class="screen-frame">
+      <header><div class="header-inner"><a class="logo">ROOM<span>CRAFT</span></a><nav style="display:flex;gap:4px"><span class="nav-link">ホーム</span><span class="nav-link">物件一覧</span><span class="nav-link active">管理</span></nav></div></header>
+      <div style="max-width:1200px;margin:0 auto;padding:24px">
+        <h1 style="font-size:24px;font-weight:900;margin-bottom:20px">管理画面</h1>
+        <div class="admin-tabs"><button class="admin-tab active">概要</button><button class="admin-tab">チケット管理</button></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">物件数</div></div>
+          <div class="stat-card"><div class="stat-value">987</div><div class="stat-label">残りチケット</div></div>
+          <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">今月のAI解析</div></div>
+          <div class="stat-card"><div class="stat-value">45</div><div class="stat-label">累計AI解析</div></div>
+        </div>
+        <div class="admin-section">
+          <h3>最近のAI解析</h3>
+          <table class="admin-table">
+            <thead><tr><th>日時</th><th>ステータス</th></tr></thead>
+            <tbody>
+              <tr><td>2026/03/18</td><td><span class="status-badge status-success">success</span></td></tr>
+              <tr><td>2026/03/17</td><td><span class="status-badge status-success">success</span></td></tr>
+              <tr><td>2026/03/16</td><td><span class="status-badge status-error">error</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-share">
+    <div class="screen-title">コンポーネント: 共有モーダル</div>
+    <div class="screen-desc">共有URL生成とQRコード表示</div>
+    <div class="screen-frame" style="height:440px;position:relative;background:rgba(0,0,0,0.3)">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+        <div class="modal" style="pointer-events:auto">
+          <h2>共有する</h2>
+          <div class="share-link-box">
+            <input class="share-link-input" value="https://roomcraft.jp/share/l9YnzkFz" readonly>
+            <button class="btn btn-primary btn-sm">コピー</button>
+          </div>
+          <div class="share-options">
+            <div class="share-option"><span class="icon">📱</span><span class="text">QRコードを表示（店頭掲示用）</span></div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--gray-50);border-radius:10px;margin-bottom:16px">
+            <div style="width:120px;height:120px;background:#ddd;margin:0 auto;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gray-400)">[QR Code]</div>
+          </div>
+          <button class="btn btn-outline" style="width:100%">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-edit">
+    <div class="screen-title">コンポーネント: 編集パネル</div>
+    <div class="screen-desc">部屋の寸法・タイプを手動修正</div>
+    <div class="component-section" style="max-width:300px">
+      <div style="padding-bottom:12px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="font-size:14px;font-weight:700">部屋を編集</h3>
+        <span style="color:var(--gray-400);cursor:pointer;font-size:18px">&times;</span>
+      </div>
+      <div class="edit-room-form">
+        <div class="form-group"><label>部屋名</label><input type="text" value="リビング・ダイニング"></div>
+        <div class="form-group"><label>タイプ</label><select><option selected>リビング</option><option>寝室</option><option>キッチン</option></select></div>
+        <div class="form-grid">
+          <div class="form-group"><label>幅 (M)</label><input type="number" value="5.4"></div>
+          <div class="form-group"><label>奥行き (M)</label><input type="number" value="4.5"></div>
+          <div class="form-group"><label>天井高 (M)</label><input type="number" value="2.4"></div>
+          <div class="form-group"><label>X座標</label><input type="number" value="0.0"></div>
+          <div class="form-group"><label>Z座標</label><input type="number" value="0.0"></div>
+        </div>
+        <button class="btn btn-sm btn-outline" style="width:100%;margin-top:12px;color:var(--danger);border-color:var(--danger)">この部屋を削除</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="page-furniture">
+    <div class="screen-title">コンポーネント: 家具パネル</div>
+    <div class="screen-desc">3D空間に家具を配置</div>
+    <div class="component-section" style="max-width:300px">
+      <div style="padding-bottom:12px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="font-size:14px;font-weight:700">家具配置</h3>
+        <span style="color:var(--gray-400);cursor:pointer;font-size:18px">&times;</span>
+      </div>
+      <div class="furniture-grid" style="pointer-events:auto">
+        <div class="furniture-item"><span class="icon">🛋️</span><span class="name">ソファ</span><span class="size">W180×D85</span></div>
+        <div class="furniture-item"><span class="icon">🛏️</span><span class="name">ベッド</span><span class="size">W140×D200</span></div>
+        <div class="furniture-item"><span class="icon">🪑</span><span class="name">ダイニング</span><span class="size">W120×D80</span></div>
+        <div class="furniture-item"><span class="icon">📺</span><span class="name">TVボード</span><span class="size">W150×D40</span></div>
+        <div class="furniture-item"><span class="icon">📚</span><span class="name">本棚</span><span class="size">W80×D30</span></div>
+        <div class="furniture-item"><span class="icon">🚪</span><span class="name">クローゼット</span><span class="size">W120×D60</span></div>
+        <div class="furniture-item"><span class="icon">🖥️</span><span class="name">デスク</span><span class="size">W120×D60</span></div>
+        <div class="furniture-item"><span class="icon">☕</span><span class="name">テーブル</span><span class="size">W90×D50</span></div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="placed-item"><span>ソファ</span><span class="placed-item-remove">&times;</span></div>
+        <div class="placed-item" style="margin-top:4px"><span>ベッド</span><span class="placed-item-remove">&times;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-section" id="mobile">
+    <div class="screen-title">レスポンシブ表示</div>
+    <div class="screen-desc">375px幅でのモバイル表示</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <!-- Mobile upload -->
+      <div class="screen-frame" style="width:375px;flex-shrink:0">
+        <header><div class="header-inner" style="padding:0 16px"><a class="logo" style="font-size:18px">ROOM<span>CRAFT</span></a><nav style="display:flex;gap:2px"><span class="nav-link" style="padding:6px 8px;font-size:11px">ホーム</span><span class="nav-link" style="padding:6px 8px;font-size:11px">物件</span><span class="nav-link" style="padding:6px 8px;font-size:11px">管理</span></nav></div></header>
+        <div style="padding:24px 16px">
+          <div style="text-align:center">
+            <h1 style="font-size:24px;font-weight:900;margin-bottom:8px">間取り図から、<br>歩ける部屋へ。</h1>
+            <p style="font-size:13px;color:var(--gray-500);margin-bottom:24px">AIが自動で3D空間を生成</p>
+          </div>
+          <div class="drop-zone" style="padding:32px 16px">
+            <div style="font-size:36px;margin-bottom:8px">📐</div>
+            <div style="font-size:14px;color:var(--gray-700);margin-bottom:4px;font-weight:500">間取り図をタップして選択</div>
+            <div style="font-size:11px;color:var(--gray-400)">PNG / JPG / PDF</div>
+            <div class="drop-zone-btn" style="margin-top:12px;font-size:12px;padding:8px 20px">ファイルを選択</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile toolbar -->
+      <div class="screen-frame screen-frame-dark" style="width:375px;height:300px;flex-shrink:0;position:relative">
+        <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:10">
+          <div class="viewer-toolbar" style="position:static;transform:none;flex-wrap:wrap;justify-content:center;max-width:350px;gap:1px;padding:4px">
+            <button class="toolbar-btn active" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">🗺️</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">📋</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">👁️</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">📐</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">✏️</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">🛋️</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">📷</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">🔗</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">💾</span></button>
+            <button class="toolbar-btn" style="padding:7px 10px;font-size:11px"><span class="icon" style="font-size:14px">←</span></button>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#d0d0d0,#e8e8e8)"></div>
+        <div class="viewer-info-bar" style="position:absolute;bottom:8px;left:8px;gap:12px;padding:8px 12px">
+          <div class="info-item"><span class="label">物件</span><span class="value" style="font-size:12px">パークハイツ</span></div>
+          <div class="info-item"><span class="label">間取り</span><span class="value" style="font-size:12px">2LDK</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== UX SPEC ==================== -->
+
+  <section class="screen-section" id="ux-flow">
+    <div class="screen-title">ユーザーフロー</div>
+    <div class="screen-desc">主要な3パターンの利用フロー</div>
+
+    <div class="spec-card">
+      <h4>初回利用フロー</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;margin-top:8px">
+        <span style="background:var(--primary);color:white;padding:4px 10px;border-radius:6px">トップページ</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">間取り図アップ</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">ローディング（3ステップ）</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--primary);color:white;padding:4px 10px;border-radius:6px">3Dビューア</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">俯瞰で確認</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">一人称ウォーク</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">家具配置 / 共有</span>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <h4>リピートフロー</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;margin-top:8px">
+        <span style="background:var(--primary);color:white;padding:4px 10px;border-radius:6px">物件一覧</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">保存済み物件を選択</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--primary);color:white;padding:4px 10px;border-radius:6px">3Dビューア</span>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <h4>共有リンク閲覧フロー</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;margin-top:8px">
+        <span style="background:var(--accent);color:white;padding:4px 10px;border-radius:6px">共有URL受信</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--gray-100);padding:4px 10px;border-radius:6px">ブラウザで開く</span>
+        <span style="color:var(--gray-400)">→</span>
+        <span style="background:var(--primary);color:white;padding:4px 10px;border-radius:6px">3Dビューア（閲覧のみ）</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Smooth scroll for nav links
+  document.querySelectorAll('.mockup-nav a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
